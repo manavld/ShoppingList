@@ -35,8 +35,8 @@ public class ShoppingListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shopping_list);
 
         items = new ArrayList<>();
-        items.add(new ShoppingItem("Potatoes"));
-        items.add(new ShoppingItem("Toilet Paper"));
+        items.add(new ShoppingItem("Potatoes", false));
+        items.add(new ShoppingItem("Toilet Paper", false));
 
         items_view = findViewById(R.id.items_view);
         btn_add = findViewById(R.id.btn_add);
@@ -55,6 +55,8 @@ public class ShoppingListActivity extends AppCompatActivity {
             public void onClick(int position) {
                 String msg = "Has clicat: " + items.get(position).getName();
                 Toast.makeText(ShoppingListActivity.this, msg, Toast.LENGTH_SHORT).show();
+                items.get(position).setChecked(!items.get(position).isChecked());
+                adapter.notifyItemChanged(position);
             }
         });
     }
