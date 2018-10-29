@@ -10,7 +10,7 @@ public class ItemHolder extends RecyclerView.ViewHolder {
     private TextView name_view;
     private CheckBox check_box;
 
-    public ItemHolder(@NonNull View itemView, final ShoppingListAdapter.OnClickListener onClickListener) {
+    public ItemHolder(@NonNull View itemView, final ShoppingListAdapter.OnClickListener onClickListener, final ShoppingListAdapter.OnLongClickListener onLongClickListener) {
         super(itemView);
         name_view = itemView.findViewById(R.id.name_view);
         check_box = itemView.findViewById(R.id.check_box);
@@ -24,6 +24,18 @@ public class ItemHolder extends RecyclerView.ViewHolder {
                 }
             }
         });
+
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (onLongClickListener != null) {
+                    int pos = getAdapterPosition();
+                    onLongClickListener.onLongClick(pos);
+                }
+                return true;
+            }
+        });
+        check_box.callOnClick();
     }
 
     public void bind(ShoppingItem item) {

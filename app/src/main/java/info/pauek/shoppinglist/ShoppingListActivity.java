@@ -1,5 +1,7 @@
 package info.pauek.shoppinglist;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -63,6 +65,13 @@ public class ShoppingListActivity extends AppCompatActivity {
                 adapter.notifyItemChanged(position);
             }
         });
+
+        adapter.setOnLongClickListener(new ShoppingListAdapter.OnLongClickListener() {
+            @Override
+            public void onLongClick(int position) {
+                OnDeleteItem(position);
+            }
+        });
     }
 
     public void AddItemClick (View view) {
@@ -98,4 +107,20 @@ public class ShoppingListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void OnDeleteItem(final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String delete_text = "Are you sure you want to delete '" + items.get(position).getName() + "' from your list?";
+        builder.setTitle("Delete?")
+                .setMessage(delete_text)
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                         Toast.makeText(ShoppingListActivity.this, items.get(position).getName() + " deleted", Toast.LENGTH_SHORT).show();
+                          items.remove(position);
+                          adapter.notifyItemRemoved(position);
+                    }
+                 })
+                .setNegativeButton(android.R.string.cancel, null);
+        builder.create().show();
+    }
 }
